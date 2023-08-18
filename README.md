@@ -1,16 +1,11 @@
-# step1
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# GitHub APIを使ってユーザーリストを表示するアプリ
+名前の通りのアプリです<br>
+以下の技術を使用してアプリを構成しております。
+~~~
+flutter_riverpod
+freezed
+dio
+go_router
+flutter_inappwebview
+pedantic_mono
+~~~
