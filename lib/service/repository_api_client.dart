@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:step1/model/user.dart';
 
 class Client {
-  Future<List<User>?> fetchList() async {
+  Future<List<User>?> fetchList(int since) async {
     final dio = Dio();
-    const url = 'https://api.github.com/users';
+    const url = 'https://api.github.com/users?per_page=20&since=$since';
     final response = await dio.get(url);
 
     if (response.statusCode == 200) {
