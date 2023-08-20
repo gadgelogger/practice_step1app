@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'reqository.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
