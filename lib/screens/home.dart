@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step1/view_model/post_asyncnotifier_provider.dart';
@@ -14,26 +12,6 @@ class Home extends ConsumerStatefulWidget {
 class _HomeState extends ConsumerState<Home> {
   final ScrollController _controller = ScrollController();
   int oldLength = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 5), (timer) async {
-      //リストの最後までスクロールをしたかどうかをチェック
-      //現在のスクロール位置＜最大下部のスクロール位置になったら発動
-      if (_controller.position.pixels >
-          _controller.position.maxScrollExtent -
-              MediaQuery.of(context).size.height) {
-        //不意データの長さと現在のデータの長さが同じであれば次のページを読み込む
-        if (oldLength ==
-            ref.read(postAsyncnotifierProviderProvider).value!.posts!.length) {
-          // make sure ListView has newest data after previous loadMore
-          //さっきの条件がTrueであればこれを実行して読み込む
-          ref.read(postAsyncnotifierProviderProvider.notifier).loadMorePost();
-        }
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,45 +51,70 @@ class _HomeState extends ConsumerState<Home> {
                     .read(postAsyncnotifierProviderProvider.notifier)
                     .refresh();
               },
-              child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  controller: _controller,
-                  itemCount: asyncTodos.posts!.length + 1, //リストに表示するデータの個数
-                  itemBuilder: (ctx, index) {
-                    // 現在ビルドされているリストのアイテムの位置を示す番号らしい。
-                    //ctxはcontextの略
-                    // 最後の要素（プログレスバー、エラー、または最後の要素に到達した場合はDone!とする）
-                    if (index == asyncTodos.posts!.length) {
-                      // さらにロードしてエラーが出た際に実行
-                      if (asyncTodos.isLoadMoreError) {
-                        return const Center(
-                          child: Text('Error'),
-                        );
-                      }
-                      // ロードしまくって最後の部分に到達した際に実行させる
-                      if (asyncTodos.isLoadMoreDone) {
-                        return const Center(
-                          child: Text(
-                            'Done!',
-                            style: TextStyle(color: Colors.green, fontSize: 20),
-                          ),
-                        );
-                      }
-                      return const LinearProgressIndicator();
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollNotification) {
+                  if (scrollNotification is ScrollEndNotification) {
+                    if (oldLength ==
+                        ref
+                            .read(postAsyncnotifierProviderProvider)
+                            .value!
+                            .posts!
+                            .length) {
+                      // make sure ListView has newest data after previous loadMore
+                      //さっきの条件がTrueであればこれを実行して読み込む
+                      ref
+                          .read(postAsyncnotifierProviderProvider.notifier)
+                          .loadMorePost();
                     }
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            asyncTodos.posts![index].login,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(asyncTodos.posts![index].url),
+                  }
+                  return false;
+                },
+                child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    controller: _controller,
+                    itemCount: asyncTodos.posts!.length + 1, //リストに表示するデータの個数
+                    itemBuilder: (ctx, index) {
+                      // 現在ビルドされているリストのアイテムの位置を示す番号らしい。
+                      //ctxはcontextの略
+                      // 最後の要素（プログレスバー、エラー、または最後の要素に到達した場合はDone!とする）
+                      if (index == asyncTodos.posts!.length) {
+                        // さらにロードしてエラーが出た際に実行
+                        if (asyncTodos.isLoadMoreError) {
+                          return const Center(
+                            child: Text('Error'),
+                          );
+                        }
+                        // ロードしまくって最後の部分に到達した際に実行させる
+                        if (asyncTodos.isLoadMoreDone) {
+                          return const Center(
+                            child: Text(
+                              'Done!',
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 20),
+                            ),
+                          );
+                        }
+                        return const LinearProgressIndicator();
+                      }
+                      return Card(
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                asyncTodos.posts![index].login,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(asyncTodos.posts![index].url),
+                              leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      asyncTodos.posts![index].avater)),
+                            ),
+                          ],
                         ),
-                        const Divider(),
-                      ],
-                    );
-                  }),
+                      );
+                    }),
+              ),
             );
           },
         ),
