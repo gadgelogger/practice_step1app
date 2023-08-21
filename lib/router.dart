@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:step1/screens/webview.dart';
 import 'package:step1/screens/home.dart';
 
+//GoRouterの設定ファイル
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(

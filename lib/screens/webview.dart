@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+//WebViewを表示するためのファイル
 class SubPage extends StatelessWidget {
   SubPage(this.text, {required Key key}) : super(key: key);
 
