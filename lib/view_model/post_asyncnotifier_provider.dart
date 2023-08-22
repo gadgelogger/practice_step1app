@@ -53,7 +53,7 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
     if (posts.isNotEmpty) {
       // 投稿が取得できた場合、ページを増やして新しい状態をセット
       state = AsyncValue.data(currentState.copyWith(
-          since: currentState.since + 1,
+          since: currentState.since + 20,
           isLoading: false,
           isLoadMoreDone: false,
           posts: [...?currentState.posts, ...posts]));

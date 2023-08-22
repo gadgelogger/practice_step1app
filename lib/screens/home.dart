@@ -54,17 +54,22 @@ class _HomeState extends ConsumerState<Home> {
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollNotification) {
                   if (scrollNotification is ScrollEndNotification) {
-                    if (oldLength ==
-                        ref
-                            .read(postAsyncnotifierProviderProvider)
-                            .value!
-                            .posts!
-                            .length) {
-                      // make sure ListView has newest data after previous loadMore
-                      //さっきの条件がTrueであればこれを実行して読み込む
-                      ref
-                          .read(postAsyncnotifierProviderProvider.notifier)
-                          .loadMorePost();
+                    final before = scrollNotification.metrics.extentBefore;
+                    final max = scrollNotification.metrics.maxScrollExtent;
+                    if (before == max) {
+                      if (oldLength ==
+                          ref
+                              .read(postAsyncnotifierProviderProvider)
+                              .value!
+                              .posts!
+                              .length) {
+                        setState(() {
+                          ref
+                              .read(postAsyncnotifierProviderProvider.notifier)
+                              .loadMorePost();
+                        });
+                      }
+                      return true;
                     }
                   }
                   return false;
