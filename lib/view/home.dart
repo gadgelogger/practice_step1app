@@ -11,7 +11,6 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
-  final ScrollController _controller = ScrollController();
   int oldLength = 0;
 
   @override
@@ -77,7 +76,6 @@ class _HomeState extends ConsumerState<Home> {
                 },
                 child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    controller: _controller,
                     itemCount: asyncTodos.posts!.length + 1, //リストに表示するデータの個数
                     itemBuilder: (ctx, index) {
                       // 現在ビルドされているリストのアイテムの位置を示す番号らしい。

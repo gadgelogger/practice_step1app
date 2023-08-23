@@ -1,7 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:step1/infrastructure/repository_api_client.dart';
 import 'package:step1/model/post.dart';
 import 'package:step1/model/post_state.dart';
-import 'package:step1/infrastructure/repository_api_client.dart';
 
 part 'post_asyncnotifier_provider.g.dart'; // このファイルはコード生成によって作成される
 
@@ -13,6 +14,7 @@ part 'post_asyncnotifier_provider.g.dart'; // このファイルはコード生�
 
 class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
   // 初期状態を構築するメソッド
+  @override
   FutureOr<PostState> build() async {
     final posts = await _initPosts(0); // 1ページ目の投稿を非同期に取得
     return PostState(posts: posts); // 初期状態を返す
@@ -20,7 +22,8 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
   // 初期ページの投稿を取得する非同期メソッド
 
   Future<List<Post>?> _initPosts(int initPage) async {
-    final posts = await fetchList(initPage);
+    final repositoryApiClient = RepositoryApiClient(Dio());
+    final posts = await repositoryApiClient.fetchList(initPage);
     return posts;
   }
   // より多くの投稿を非同期にロードするメソッド
@@ -41,8 +44,10 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
     // 新しい状態をセットしてロード開始
     state = AsyncValue.data(currentState.copyWith(
         isLoading: true, isLoadMoreDone: false, isLoadMoreError: false));
+    final repositoryApiClient = RepositoryApiClient(Dio());
 
-    final posts = await fetchList(currentState.since + 20); // 次のページの投稿を非同期に取得
+    final posts = await repositoryApiClient
+        .fetchList(currentState.since + 20); // 次のページの投稿を非同期に取得
     // エラー時の処理
     state = AsyncValue.data(
         currentState.copyWith(isLoadMoreError: true, isLoading: false));
