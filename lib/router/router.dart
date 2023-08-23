@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:step1/screens/webview.dart';
-import 'package:step1/screens/home.dart';
+import 'package:step1/view/webview.dart';
+import 'package:step1/view/home.dart';
 
 //GoRouterの設定ファイル
 final GoRouter router = GoRouter(

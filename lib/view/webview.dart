@@ -4,7 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 //WebViewを表示するためのファイル
 class SubPage extends StatefulWidget {
   SubPage(this.text, {super.key});
-  String text;
+  final String text;
 
   @override
   State<SubPage> createState() => _SubPageState();

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:step1/model/post.dart';
 import 'package:step1/model/post_state.dart';
-import 'package:step1/service/repository_api_client.dart';
+import 'package:step1/infrastructure/repository_api_client.dart';
 
 part 'post_asyncnotifier_provider.g.dart'; // このファイルはコード生成によって作成される
 
@@ -48,8 +48,7 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
         currentState.copyWith(isLoadMoreError: true, isLoading: false));
 
     // ロード完了のログ出力
-    print(
-        'load more ${posts!.length} posts at page ${currentState.since + 20}');
+    print('load more ${posts.length} posts at page ${currentState.since + 20}');
     if (posts.isNotEmpty) {
       // 投稿が取得できた場合、ページを増やして新しい状態をセット
       state = AsyncValue.data(currentState.copyWith(
