@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:step1/model/post.dart';
 
 //APIの取得を行うファイル
-
+//書き方はこのサイトを参考https://terupro.net/flutter-api-dio-sample/
 class RepositoryApiClient {
   final Dio dio;
 
