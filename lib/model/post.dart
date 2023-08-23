@@ -11,6 +11,7 @@ class Post {
       required this.id});
 
   factory Post.fromJson(Map<String, dynamic> json) {
+    //ここで処理を行い[Post]で返す
     return Post(
       login: json['login'],
       url: json['html_url'],

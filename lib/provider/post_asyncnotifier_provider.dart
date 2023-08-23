@@ -9,7 +9,7 @@ part 'post_asyncnotifier_provider.g.dart'; // このファイルはコード生�
 //これはRverpodを使用して非同期に投稿データを取得するロジックを実装している。
 @Riverpod(
     keepAlive:
-        true) // Riverpodアノテーションを使用し、ProviderのkeepAliveオプションを有効化。Trueにすると使わないプロパイダを破棄する
+        true) // Riverpodアノテーションを使用し、ProviderのkeepAliveオプションを有効化。Trueにすると使わないプロパイダを破棄されなくなる
 // コードジェネレーションを利用するための設定
 
 class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
@@ -29,11 +29,10 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
   // より多くの投稿を非同期にロードするメソッド
 
   Future<void> loadMorePost() async {
-    final currentState = state.value; // 現在の状態を取得
-    //isLoadingっだとバグるが、isLoadMoreErrorだと動いたのでおかしい。
-    //いや、そもそもこれエラー吐いた時に動かす処理だからisLoadMoreErrorじゃないとおかしくね？
+    final currentState = state.value; // 現在の状態を取得(20行目のやつ)
     if (currentState == null || currentState.isLoadMoreError) {
-      print('Loading failed or already loading.'); // ロード中かエラーならリターン
+      //currentStateがnullかisLoadMoreErrorがtrueの場合に実行
+      print('Loading failed or already loading.');
       return;
     }
 
@@ -41,21 +40,21 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
     print(
         'try to request loading ${currentState.isLoading} at ${currentState.since + 20}');
 
-    // 新しい状態をセットしてロード開始
+    // Freezedのファイルに新しい状態をセットしてロード開始
     state = AsyncValue.data(currentState.copyWith(
         isLoading: true, isLoadMoreDone: false, isLoadMoreError: false));
-    final repositoryApiClient = RepositoryApiClient(Dio());
+    final repositoryApiClient = RepositoryApiClient(Dio()); //APIクライアントをインスタンス化
 
-    final posts = await repositoryApiClient
-        .fetchList(currentState.since + 20); // 次のページの投稿を非同期に取得
-    // エラー時の処理
+    final posts = await repositoryApiClient.fetchList(
+        currentState.since + 20); // 次のページの投稿を非同期に取得(20件ずつ取得したいので+20してる)
+    // エラー時の処理(また新しい状態をセット)
     state = AsyncValue.data(
         currentState.copyWith(isLoadMoreError: true, isLoading: false));
 
     // ロード完了のログ出力
     print('load more ${posts.length} posts at page ${currentState.since + 20}');
     if (posts.isNotEmpty) {
-      // 投稿が取得できた場合、ページを増やして新しい状態をセット
+      // 48行目で実行したposts投稿が取得できた場合(postsが空でない時)、ページを増やして新しい状態をセット
       state = AsyncValue.data(currentState.copyWith(
           since: currentState.since + 20,
           isLoading: false,
@@ -65,7 +64,7 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
       // 投稿が空の場合、ページを増やさずに新しい状態をセット
       state = AsyncValue.data(currentState.copyWith(
         isLoading: false,
-        isLoadMoreDone: true,
+        isLoadMoreDone: true, //Doneと表示
       ));
     }
   }

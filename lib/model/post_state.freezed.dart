@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostState {
   int get since => throw _privateConstructorUsedError; //デフォルト値は1
-  List<Post>? get posts => throw _privateConstructorUsedError; //Postクラスのリスト
+  List<Post>? get posts =>
+      throw _privateConstructorUsedError; //Postクラスのリスト(post.dartで定義したクラス)
   bool get isLoading => throw _privateConstructorUsedError; //デフォルト値はtrue
   bool get isLoadMoreError => throw _privateConstructorUsedError; //デフォルト値はfalse
   bool get isLoadMoreDone => throw _privateConstructorUsedError;
@@ -168,7 +169,7 @@ class _$_PostState extends _PostState with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(value);
   }
 
-//Postクラスのリスト
+//Postクラスのリスト(post.dartで定義したクラス)
   @override
   @JsonKey()
   final bool isLoading;
@@ -242,7 +243,7 @@ abstract class _PostState extends PostState {
   int get since;
   @override //デフォルト値は1
   List<Post>? get posts;
-  @override //Postクラスのリスト
+  @override //Postクラスのリスト(post.dartで定義したクラス)
   bool get isLoading;
   @override //デフォルト値はtrue
   bool get isLoadMoreError;
