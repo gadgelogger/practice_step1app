@@ -11,8 +11,8 @@ part 'post_asyncnotifier_provider.g.dart'; // このファイルはコード生�
     keepAlive:
         true) // Riverpodアノテーションを使用し、ProviderのkeepAliveオプションを有効化。Trueにすると使わないプロパイダを破棄されなくなる
 // コードジェネレーションを利用するための設定
-
-class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
+//todo:コード生成しとく
+class PostNotifier extends _$PostNotifier {
   // 初期状態を構築するメソッド
   @override
   FutureOr<PostState> build() async {
@@ -47,6 +47,7 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
 
     final posts = await repositoryApiClient.fetchList(
         currentState.since + 20); // 次のページの投稿を非同期に取得(20件ずつ取得したいので+20してる)
+    //todo:sinceは違うぞ！！！（実装ミス）
     // エラー時の処理(また新しい状態をセット)
     state = AsyncValue.data(
         currentState.copyWith(isLoadMoreError: true, isLoading: false));
@@ -56,9 +57,10 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
     if (posts.isNotEmpty) {
       // 48行目で実行したposts投稿が取得できた場合(postsが空でない時)、ページを増やして新しい状態をセット
       state = AsyncValue.data(currentState.copyWith(
-          since: currentState.since + 20,
-          isLoading: false,
-          isLoadMoreDone: false,
+          since: currentState.since +
+              20, //todo:sinceはいらない（代替できる処理にする_privateを使うとか）
+          isLoading: false, //todo:ローディング関連はこっちに書くことを統一する(main.dartにあるやつは削除)
+          isLoadMoreDone: false, //同じく
           posts: [...?currentState.posts, ...posts]));
     } else {
       // 投稿が空の場合、ページを増やさずに新しい状態をセット
@@ -66,25 +68,6 @@ class PostAsyncnotifierProvider extends _$PostAsyncnotifierProvider {
         isLoading: false,
         isLoadMoreDone: true, //Doneと表示
       ));
-    }
-  }
-
-  Future<void> refresh() async {
-    // リフレッシュ開始のログ出力
-    print('リフレッシュ中');
-
-    try {
-      // 1ページ目の投稿を非同期に取得
-      final posts = await _initPosts(0);
-
-      // 新しい状態をセットしてリフレッシュ完了(初期状態に戻す)
-      state = AsyncValue.data(PostState(posts: posts));
-
-      print('リフレッシュ完了'); // リフレッシュ完了のログ出力
-    } catch (error, stack) {
-      // エラー時の処理
-      print('リフレッシュ失敗$error$stack');
-      state = AsyncValue.error(error, stack);
     }
   }
 }

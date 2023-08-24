@@ -1,3 +1,5 @@
+//説明１：とりまAPIから取得したい要素のクラスを作成する
+//todo:freezedで構築すること！
 class Post {
   final String login;
   final String url;

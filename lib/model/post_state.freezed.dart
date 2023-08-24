@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostState {
   int get since => throw _privateConstructorUsedError; //デフォルト値は1
-  List<Post>? get posts =>
+  List<Post> get posts =>
       throw _privateConstructorUsedError; //Postクラスのリスト(post.dartで定義したクラス)
   bool get isLoading => throw _privateConstructorUsedError; //デフォルト値はtrue
   bool get isLoadMoreError => throw _privateConstructorUsedError; //デフォルト値はfalse
@@ -35,7 +35,7 @@ abstract class $PostStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int since,
-      List<Post>? posts,
+      List<Post> posts,
       bool isLoading,
       bool isLoadMoreError,
       bool isLoadMoreDone});
@@ -55,7 +55,7 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
   @override
   $Res call({
     Object? since = null,
-    Object? posts = freezed,
+    Object? posts = null,
     Object? isLoading = null,
     Object? isLoadMoreError = null,
     Object? isLoadMoreDone = null,
@@ -65,10 +65,10 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
           ? _value.since
           : since // ignore: cast_nullable_to_non_nullable
               as int,
-      posts: freezed == posts
+      posts: null == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
+              as List<Post>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -94,7 +94,7 @@ abstract class _$$_PostStateCopyWith<$Res> implements $PostStateCopyWith<$Res> {
   @useResult
   $Res call(
       {int since,
-      List<Post>? posts,
+      List<Post> posts,
       bool isLoading,
       bool isLoadMoreError,
       bool isLoadMoreDone});
@@ -112,7 +112,7 @@ class __$$_PostStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? since = null,
-    Object? posts = freezed,
+    Object? posts = null,
     Object? isLoading = null,
     Object? isLoadMoreError = null,
     Object? isLoadMoreDone = null,
@@ -122,10 +122,10 @@ class __$$_PostStateCopyWithImpl<$Res>
           ? _value.since
           : since // ignore: cast_nullable_to_non_nullable
               as int,
-      posts: freezed == posts
+      posts: null == posts
           ? _value._posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
+              as List<Post>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -147,7 +147,7 @@ class __$$_PostStateCopyWithImpl<$Res>
 class _$_PostState extends _PostState with DiagnosticableTreeMixin {
   const _$_PostState(
       {this.since = 0,
-      final List<Post>? posts,
+      final List<Post> posts = const [],
       this.isLoading = true,
       this.isLoadMoreError = false,
       this.isLoadMoreDone = false})
@@ -158,15 +158,14 @@ class _$_PostState extends _PostState with DiagnosticableTreeMixin {
   @JsonKey()
   final int since;
 //デフォルト値は1
-  final List<Post>? _posts;
+  final List<Post> _posts;
 //デフォルト値は1
   @override
-  List<Post>? get posts {
-    final value = _posts;
-    if (value == null) return null;
+  @JsonKey()
+  List<Post> get posts {
     if (_posts is EqualUnmodifiableListView) return _posts;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_posts);
   }
 
 //Postクラスのリスト(post.dartで定義したクラス)
@@ -233,7 +232,7 @@ class _$_PostState extends _PostState with DiagnosticableTreeMixin {
 abstract class _PostState extends PostState {
   const factory _PostState(
       {final int since,
-      final List<Post>? posts,
+      final List<Post> posts,
       final bool isLoading,
       final bool isLoadMoreError,
       final bool isLoadMoreDone}) = _$_PostState;
@@ -242,7 +241,7 @@ abstract class _PostState extends PostState {
   @override
   int get since;
   @override //デフォルト値は1
-  List<Post>? get posts;
+  List<Post> get posts;
   @override //Postクラスのリスト(post.dartで定義したクラス)
   bool get isLoading;
   @override //デフォルト値はtrue

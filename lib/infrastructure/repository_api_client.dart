@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart'; //Dioパッケージをインポート
 import 'package:step1/model/post.dart'; //Postモデルをインポート
 
-//APIの取得を行うファイル
+//説明3:APIの取得を行うファイル
 //書き方はこのサイトを参考https://terupro.net/flutter-api-dio-sample/
 class RepositoryApiClient {
-  final Dio dio; //Dioクラスのインスタンスを定義
+  final Dio dio; //Dioクラスのインスタンスを定義(依存してる部分な！)
 
   RepositoryApiClient(this.dio); //コンストラクタ
 
@@ -16,14 +16,10 @@ class RepositoryApiClient {
     final response = await dio.get(url); //APIからデータを取得
     //正常なリクエストの場合
     if (response.statusCode == 200) {
-      try {
-        final datas = response.data as List<dynamic>; //APIから取得したデータをリストに変換
-        final list =
-            datas.map((e) => Post.fromJson(e)).toList(); //Postモデルに変換してリストに格納
-        return list; //リストを返す
-      } catch (e) {
-        rethrow; //エラーが発生した場合は再スローする
-      }
+      final datas = response.data as List<dynamic>; //APIから取得したデータをリストに変換
+      final list =
+          datas.map((e) => Post.fromJson(e)).toList(); //Postモデルに変換してリストに格納
+      return list; //リストを返す
     }
 
     return []; //エラーが発生した場合は空のリストを返す
